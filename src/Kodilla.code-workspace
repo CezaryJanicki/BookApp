@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../Docker"
+		}
+	],
+	"settings": {
+		"editor.trimAutoWhitespace": true
+	}
+}
