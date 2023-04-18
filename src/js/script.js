@@ -32,11 +32,11 @@
 
   function initActions() {
     const bookImageContainer = document.querySelectorAll(select.containerOf.bookImage);
-    for (const iterator of bookImageContainer) {
-      iterator.addEventListener('dblclick', function(event) {
+    for (const book of bookImageContainer) {
+      book.addEventListener('dblclick', function(event) {
         event.preventDefault();
-        favoriteBooks.push(iterator.getAttribute('data-id'));
-        iterator.classList.add('favorite');
+        favoriteBooks.push(book.getAttribute('data-id'));
+        book.classList.toggle('favorite');
       });
     }
   }
