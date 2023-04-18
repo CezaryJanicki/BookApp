@@ -1,5 +1,5 @@
 {
-  'use strict';
+  'user strict';
 
   class BookApp {
 
@@ -99,5 +99,6 @@
       }
     }
   }
+  /* eslint-disable no-unused-vars */
   const app = new BookApp();
 }
