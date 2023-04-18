@@ -10,6 +10,7 @@
       bookImage: '.book__image',
     },
     filters: '.filters',
+    ratingFill: '.book__rating__fill',
 
   };
 
@@ -24,6 +25,8 @@
     for (let book of dataSource.books) {
       const generatedHTML = bookCase(book);
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      const ratingBar = generatedDOM.querySelector(select.ratingFill);
+      rateBar(book, ratingBar);
       bookListContainer.appendChild(generatedDOM);
     }
   }
@@ -70,6 +73,20 @@
     }
   }
 
+  function rateBar(book, ratingBar) {
+    if (book.rating < 6) {
+      ratingBar.style = `background: linear-gradient(to right, #fefcea ${book.rating * 10}%,transparent ${100 - book.rating * 10}%)`;
+    } else if (book.rating > 6 && book.rating <= 8) {
+      ratingBar.style = `background: linear-gradient(to right, #b4df5b ${book.rating * 10}%,transparent ${100 - book.rating * 10}%)`;
+    } else if (book.rating > 8 && book.rating <= 9) {
+      ratingBar.style = `background: linear-gradient(to right, #299a0b ${book.rating * 10}%,transparent ${100 - book.rating * 10}%)`;
+    } else {
+      ratingBar.style = `background: linear-gradient(to right, #ff0084 ${book.rating * 10}%,transparent ${100 - book.rating * 10}%)`;
+    }
+  }
+
   renderBooks();
   initActions();
 }
+
+
