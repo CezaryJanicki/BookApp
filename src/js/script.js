@@ -1,25 +1,28 @@
 {
   'user strict';
 
+  const select = {
+    templateOf: {
+      bookCase: '#template-book',
+    },
+    containerOf: {
+      bookList: '.books-list',
+      bookImage: '.book__image',
+    },
+    filters: '.filters',
+    ratingFill: '.book__rating__fill',
+  };
+
   class BookApp {
 
     constructor() {
       const thisBookApp = this;
 
-      let select = {
-        templateOf: {
-          bookCase: '#template-book',
-        },
-        containerOf: {
-          bookList: '.books-list',
-          bookImage: '.book__image',
-        },
-        filters: '.filters',
-        ratingFill: '.book__rating__fill',
-      };
+      thisBookApp.filters = [];
+      thisBookApp.favoriteBooks = [];
+
       thisBookApp.bookCase = Handlebars.compile(document.querySelector(select.templateOf.bookCase).innerHTML);
       thisBookApp.bookListContainer = document.querySelector(select.containerOf.bookList);
-      thisBookApp.filters = [];
 
       thisBookApp.getElements();
       thisBookApp.renderBooks();
@@ -47,20 +50,27 @@
 
     initActions() {
       const thisBookApp = this;
-      const favoriteBooks = [];
       thisBookApp.bookListContainer.addEventListener('dblclick', function(event) {
         event.preventDefault();
-        favoriteBooks.push(event.target.offsetParent.getAttribute('data-id'));
+
         event.target.offsetParent.classList.toggle('favorite');
+        const bookId = event.target.offsetParent.getAttribute('data-id');
+        if (thisBookApp.favoriteBooks.includes(bookId)) {
+          const bookIndex = thisBookApp.favoriteBooks.indexOf(bookId);
+          thisBookApp.filters.splice(bookIndex, 1);
+        } else {
+          thisBookApp.favoriteBooks.push(bookId);
+        }
       });
 
       const filtersWrapper = document.querySelector('.filters');
       filtersWrapper.addEventListener('click', function(event) {
         if (event.target.tagName == 'INPUT' && event.target.type == 'checkbox' && event.target.name == 'filter') {
-          if (event.target.checked == true && thisBookApp.filters.indexOf(event.target.value) == -1) {
+          const filterIndex = thisBookApp.filters.indexOf(event.target.value);
+          if (event.target.checked && filterIndex == -1) {
             thisBookApp.filters.push(event.target.value);
-          } else if (event.target.checked == false && thisBookApp.filters.indexOf(event.target.value) != -1) {
-            thisBookApp.filters.splice(thisBookApp.filters.indexOf(event.target.value), 1);
+          } else if (!event.target.checked  && filterIndex != -1) {
+            thisBookApp.filters.splice(filterIndex, 1);
           }
         }
         thisBookApp.renderFilteredBooks();
